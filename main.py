@@ -17,6 +17,26 @@ import secrets
 import os
 import csv
 import tempfile
+import os
+import threading
+from flask import Flask
+
+web_app = Flask(__name__)
+
+@web_app.route('/')
+def home():
+    return "Bot is running 24/7!", 200
+
+def run_flask():
+    # Render PORT environment variable deta hai (default 10000 ya 8080)
+    port = int(os.environ.get("PORT", 8080))
+    # host '0.0.0.0' hona zaroori hai
+    web_app.run(host="0.0.0.0", port=port)
+
+# Isko main function ya script ke start hone par thread me chalayein:
+if __name__ == "__main__":
+    threading.Thread(target=run_flask, daemon=True).start()
+    # ... baki bot start code ...
 from datetime import datetime, timedelta, timezone
 IST = timezone(timedelta(hours=5, minutes=30))
 
