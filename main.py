@@ -54,8 +54,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ================== ⚙️ CONFIG ==================
-BOT_TOKEN = "8994826974:AAFB5Op9yMinD-6yQbwIZARcCF8OZNCzYlQ"        # <-- Apna bot token daalo
-ADMIN_IDS = [5057489358]      # <-- Apni admin telegram IDs daalo
+BOT_TOKEN = "8953914316:AAGp1wEPsiIibJ0JgQpmvaefMD9ayzDkF30"        # <-- Apna bot token daalo
+ADMIN_IDS = [5453397878]      # <-- Apni admin telegram IDs daalo
 BOT_NAME = "ZERO TRACE HOSTING"
 BOT_VERSION = "2.1"
 
