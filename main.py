@@ -17,26 +17,7 @@ import secrets
 import os
 import csv
 import tempfile
-import os
-import threading
-from flask import Flask
-
-web_app = Flask(__name__)
-
-@web_app.route('/')
-def home():
-    return "Bot is running 24/7!", 200
-
-def run_flask():
-    # Render PORT environment variable deta hai (default 10000 ya 8080)
-    port = int(os.environ.get("PORT", 8080))
-    # host '0.0.0.0' hona zaroori hai
-    web_app.run(host="0.0.0.0", port=port)
-
-# Isko main function ya script ke start hone par thread me chalayein:
-if __name__ == "__main__":
-    threading.Thread(target=run_flask, daemon=True).start()
-    # ... baki bot start code ...
+from flask import Flask, jsonify
 from datetime import datetime, timedelta, timezone
 IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -139,6 +120,66 @@ HEALTH_STATE = {
     "http_status": None,
     "checked_at": 0.0,
 }
+
+# ═════════════════════════════════════════════════════════════
+# 🌐 RENDER / FLASK WEB SERVER
+# Render Web Services require an HTTP listener on 0.0.0.0:$PORT.
+# The Telegram bot continues running in this same process.
+# ═════════════════════════════════════════════════════════════
+WEB_APP = Flask(__name__)
+WEB_PORT = int(os.getenv("PORT", "10000"))
+
+
+@WEB_APP.get("/")
+def web_home():
+    return jsonify({
+        "service": "TRX EDITION PREMIUM BOT",
+        "status": "online",
+        "message": "Telegram bot process is running.",
+        "uptime_seconds": int(max(0, time.time() - START_TIME)),
+    })
+
+
+@WEB_APP.get("/health")
+def web_health():
+    health = dict(HEALTH_STATE)
+    return jsonify({
+        "status": "ok",
+        "bot": "running",
+        "api": health.get("status", "UNKNOWN"),
+        "api_latency_ms": health.get("latency_ms"),
+        "api_http_status": health.get("http_status"),
+        "uptime_seconds": int(max(0, time.time() - START_TIME)),
+    }), 200
+
+
+@WEB_APP.get("/ping")
+def web_ping():
+    return "pong", 200
+
+
+def start_web_server():
+    """Start the Flask health server in a daemon thread for Render."""
+    def _run():
+        try:
+            logger.info("Render web server listening on 0.0.0.0:%s", WEB_PORT)
+            WEB_APP.run(
+                host="0.0.0.0",
+                port=WEB_PORT,
+                debug=False,
+                use_reloader=False,
+                threaded=True,
+            )
+        except Exception:
+            logger.exception("Render web server stopped unexpectedly")
+
+    thread = threading.Thread(
+        target=_run,
+        name="render-web-server",
+        daemon=True,
+    )
+    thread.start()
+    return thread
 
 
 def is_admin(user_id: int) -> bool:
@@ -3132,7 +3173,7 @@ def transactions_text(user_id):
         )
 
         text += (
-            f"🕐 <code>{date}</code>\n"
+            f"ð <code>{date}</code>\n"
             f"⚡ <b>{safe_type}</b>\n"
             f"💰 Amount: <b>{sign}{safe_amount}</b>\n"
             f"💳 Balance: <b>{safe_balance}</b>\n"
@@ -8282,6 +8323,12 @@ def main():
             text_router
         )
     )
+
+    # ─────────────────────────────
+    # 🌐 START RENDER / FLASK HEALTH SERVER
+    # ─────────────────────────────
+    # Must listen on 0.0.0.0 and Render's assigned PORT.
+    start_web_server()
 
     # ─────────────────────────────
     # 🚀 START BOT
