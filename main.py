@@ -54,9 +54,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ================== ⚙️ CONFIG ==================
-BOT_TOKEN = "8953914316:AAGp1wEPsiIibJ0JgQpmvaefMD9ayzDkF30"        # <-- Apna bot token daalo
+BOT_TOKEN = "8984086840:AAFjnKIH_4L2stlPri0KXnkDYWAjy070Vew"        # <-- Apna bot token daalo
 ADMIN_IDS = [5453397878]      # <-- Apni admin telegram IDs daalo
-BOT_NAME = "Backup hosting"
+BOT_NAME = "MAKI CHUT"
 BOT_VERSION = "2.1"
 
 # Directories
