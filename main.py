@@ -41,7 +41,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ══════════════ CONFIG ══════════════
-BOT_TOKEN = "7041790426:AAHOKgc2Au90maW8ZSynCCoxjDZD38z8nro"
+BOT_TOKEN = "8792302974:AAH7LGXH0X7ETz-ZXYH7GkBzRDEafmyS8es"
 API_URL = "https://api-src.alonepatel.shop/api"
 API_KEY = "INDIAN_HACKER_BRO"
 
