@@ -55,7 +55,7 @@ logger = logging.getLogger(__name__)
 
 # ================== ⚙️ CONFIG ==================
 BOT_TOKEN = "8984086840:AAFjnKIH_4L2stlPri0KXnkDYWAjy070Vew"        # <-- Apna bot token daalo
-ADMIN_IDS = [5453397878,5057489358]      # <-- Apni admin telegram IDs daalo
+ADMIN_IDS = [5453397878]      # <-- Apni admin telegram IDs daalo
 BOT_NAME = "MAKI CHUT"
 BOT_VERSION = "2.1"
 
